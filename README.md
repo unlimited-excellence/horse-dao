@@ -2,7 +2,7 @@
  <img width="100px" src="https://github.com/unlimited-excellence.png" align="center" alt="Competitive Template" />
  <h1 align="center">HORSE DAO MVP</h1>
  <h3 align="center"><p align="center">це мінімальний прототип платформи, що об'єднує спортивне програмування та блокчейн-технології.  
-Включає простого Telegram-бота, який дає можливість отримувати токени за розв'язування задач зі спортивного програмування.</p></h1>
+Включає простого Telegram-ботаФ, який дає можливість отримувати токени за розв'язування задач зі спортивного програмування.</p></h1>
 </p>
 
 ## Overview 
