@@ -1,4 +1,11 @@
-# HORSE DAO MVP
+<p align="center">
+ <img width="100px" src="https://github.com/unlimited-excellence.png" align="center" alt="Competitive Template" />
+ <h1 align="center">HORSE DAO MVP</h1>
+ <h3 align="center"><p align="center">це мінімальний прототип платформи, що об'єднує спортивне програмування та блокчейн-технології.  
+Включає простого Telegram-бота, який дає можливість</p></h1>
+</p>
+
+## Overview 
 
 **HORSE DAO MVP** — це мінімальний прототип платформи, що об'єднує спортивне програмування та блокчейн-технології.  
 Включає простого **Telegram-бота**, який дає можливість:
