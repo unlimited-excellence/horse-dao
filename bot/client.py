@@ -5,13 +5,36 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters, C
 
 class TelegramBot:
     def __init__(self):
+        # Validate environment variables
         self.token = os.getenv("TELEGRAM_BOT_TOKEN")
-        self.app = Application.builder().token(self.token).build()
-
-        self.app.add_handler(CommandHandler("start", self.start))
-        self.app.add_handler(CommandHandler("help", self.help))
-        self.app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, self.echo))
-
+        if not self.token:
+            raise ValueError("TELEGRAM_BOT_TOKEN environment variable is not set")
+        
+        try:
+            self.app = Application.builder().token(self.token).build()
+            
+            # Add handlers with rate limiting
+            self.app.add_handler(CommandHandler(
+                "start",
+                self.start,
+                block=True,
+                rate_limit_args={'num_requests': 3, 'time_window': 60}
+            ))
+            self.app.add_handler(CommandHandler(
+                "help",
+                self.help,
+                block=True,
+                rate_limit_args={'num_requests': 3, 'time_window': 60}
+            ))
+            self.app.add_handler(MessageHandler(
+                filters.TEXT & ~filters.COMMAND,
+                self.echo,
+                block=True,
+                rate_limit_args={'num_requests': 10, 'time_window': 60}
+            ))
+        except Exception as e:
+            print(f"Failed to initialize Telegram bot: {e}")
+            raise
     async def start(self, update: Update, context: CallbackContext) -> None:
         """Handler for /start command."""
         try:
