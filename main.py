@@ -5,7 +5,7 @@ import logging
 
 from db.mongo_client import MongoDBClient
 from bot.telegram_bot import TelegramBot
-from services.user_services import UserService
+from services.user_service import UserService
 
 # Configure logging
 logging.basicConfig(

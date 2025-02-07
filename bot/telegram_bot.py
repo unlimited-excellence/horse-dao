@@ -9,7 +9,7 @@ from telegram.ext import (
     CallbackContext
 )
 
-from services.user_services import UserService
+from services.user_service import UserService
 
 # Configure logging
 logging.basicConfig(
