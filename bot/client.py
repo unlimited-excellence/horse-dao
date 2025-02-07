@@ -13,12 +13,20 @@ class TelegramBot:
         self.app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, self.echo))
 
     async def start(self, update: Update, context: CallbackContext) -> None:
-        """Обробник команди /start."""
-        await update.message.reply_text("Привіт! Я ваш Telegram-бот. Використовуйте /help для отримання списку команд.")
+        """Handler for /start command."""
+        try:
+            await update.message.reply_text("Hello! I'm your Telegram bot. Use /help to get a list of commands.")
+        except Exception as e:
+            print(f"Error in start handler: {e}")
+            await update.message.reply_text("Sorry, something went wrong. Please try again later.")
 
     async def help(self, update: Update, context: CallbackContext) -> None:
-        """Обробник команди /help."""
-        await update.message.reply_text("Список команд:\n/start - Запуск бота\n/help - Допомога")
+        """Handler for /help command."""
+        try:
+            await update.message.reply_text("List of commands:\n/start - Start the bot\n/help - Get help")
+        except Exception as e:
+            print(f"Error in help handler: {e}")
+            await update.message.reply_text("Sorry, something went wrong. Please try again later.")
 
     async def echo(self, update: Update, context: CallbackContext) -> None:
         """Відповідає тим же повідомленням, яке отримує."""
