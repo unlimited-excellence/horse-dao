@@ -1,1 +1,2 @@
 pymongo[srv]~=4.7.3
+python-telegram-bot~=21.10
