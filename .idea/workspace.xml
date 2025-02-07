@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2dc1b182-3461-41cf-be2b-da5f4cd19e11" name="Changes" comment="Added `Main Branch Workflow`, which builds badges on push; also added those badges to `README.md`">
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;likespro&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/unlimited-excellence/horse-project&quot;,
+    &quot;accountId&quot;: &quot;2f820fe2-41b5-4901-9ce2-2b0b564257c2&quot;
+  },
+  &quot;recentNewPullRequestHead&quot;: {
+    &quot;server&quot;: {
+      &quot;useHttp&quot;: false,
+      &quot;host&quot;: &quot;github.com&quot;,
+      &quot;port&quot;: null,
+      &quot;suffix&quot;: null
+    },
+    &quot;owner&quot;: &quot;unlimited-excellence&quot;,
+    &quot;repository&quot;: &quot;horse-project&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="2sPBL30iisOcNbZFaNIgBL6EBYW" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;misc/github-workflows&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/zemsk/PycharmProjects/horse-project/main.py&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RunManager">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="horse-project" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="MONGODB_URI" value="mongodb+srv://likespro:vgATgmWfGK31lV7C@cluster0.u58ah.mongodb.net/" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.13 (horse-project)" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-e768b9ed790e-JavaScript-PY-243.21565.199" />
+        <option value="bundled-python-sdk-cab1f2013843-4ae2d6a61b08-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-243.21565.199" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2dc1b182-3461-41cf-be2b-da5f4cd19e11" name="Changes" comment="" />
+      <created>1738347270818</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1738347270818</updated>
+      <workItem from="1738347274428" duration="3958000" />
+      <workItem from="1738351244700" duration="1997000" />
+      <workItem from="1738419744174" duration="700000" />
+      <workItem from="1738426022478" duration="63000" />
+      <workItem from="1738427209288" duration="7098000" />
+      <workItem from="1738434673603" duration="1401000" />
+      <workItem from="1738753486967" duration="1430000" />
+      <workItem from="1738868344586" duration="1414000" />
+    </task>
+    <task id="LOCAL-00001" summary="A new title was added to README.md and main.py was created">
+      <option name="closed" value="true" />
+      <created>1738348814138</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1738348814138</updated>
+    </task>
+    <task id="LOCAL-00002" summary="README.md file was fixed">
+      <option name="closed" value="true" />
+      <created>1738349139208</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1738349139208</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Punctuation errors in the README.md file were fixed">
+      <option name="closed" value="true" />
+      <created>1738349671952</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1738349671952</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Added the How to use section to README.md">
+      <option name="closed" value="true" />
+      <created>1738350955883</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1738350955883</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Cleaned up the whole project">
+      <option name="closed" value="true" />
+      <created>1738420028023</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1738420028023</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Cleaned up the whole project">
+      <option name="closed" value="true" />
+      <created>1738427500881</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1738427500881</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Connected MongoDB to the project and created PyCharm configurations">
+      <option name="closed" value="true" />
+      <created>1738434080277</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1738434080277</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Started Telegram Bot Integration, amend this later, please">
+      <option name="closed" value="true" />
+      <created>1738753611808</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1738753611808</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Added Changed nothing comment to code to test CodeRabbit">
+      <option name="closed" value="true" />
+      <created>1738753648761</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1738753648761</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Added `TelegramBotService` class and its initialization in `main`">
+      <option name="closed" value="true" />
+      <created>1738868529671</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1738868529671</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Added `Main Branch Workflow`, which builds badges on push; and added those badges to `README.md`">
+      <option name="closed" value="true" />
+      <created>1738869008229</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1738869008229</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Added `Main Branch Workflow`, which builds badges on push; also added those badges to `README.md`">
+      <option name="closed" value="true" />
+      <created>1738869028678</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1738869028678</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="misc/github-workflows" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="A new title was added to README.md and main.py was created" />
+    <MESSAGE value="README.md file was fixed" />
+    <MESSAGE value="Punctuation errors in the README.md file were fixed" />
+    <MESSAGE value="Added the How to use section to README.md" />
+    <MESSAGE value="Cleaned up the whole project" />
+    <MESSAGE value="Connected MongoDB to the project and created PyCharm configurations" />
+    <MESSAGE value="Added Changed nothing comment to code to test CodeRabbit" />
+    <MESSAGE value="Started Telegram Bot Integration, amend this later, please" />
+    <MESSAGE value="Added `TelegramBotService` class and its initialization in `main`" />
+    <MESSAGE value="Added `Main Branch Workflow`, which builds badges on push; and added those badges to `README.md`" />
+    <MESSAGE value="Added `Main Branch Workflow`, which builds badges on push; also added those badges to `README.md`" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added `Main Branch Workflow`, which builds badges on push; also added those badges to `README.md`" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/horse_project$main.coverage" NAME="main Coverage Results" MODIFIED="1738435954248" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+  </component>
+</project>
