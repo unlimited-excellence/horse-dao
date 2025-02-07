@@ -1,0 +1,50 @@
+name: Link Branch to Issue Workflow
+
+# This workflow triggers on creation of a new ref (branch or tag)
+on:
+  create:
+
+jobs:
+  link-branch:
+    # Only run if the created ref is a branch (not a tag)
+    if: ${{ github.event.ref_type == 'branch' }}
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+
+    steps:
+      - name: Link new branch to issue if pattern matches
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            // Get the branch name from the event payload.
+            // For a branch creation event, context.payload.ref contains the branch name.
+            const branchName = context.payload.ref;
+            console.log(`New branch created: ${branchName}`);
+
+            // Define a regex that matches a branch starting with "<something>/issue-<number>".
+            // This regex requires that the branch name contains a prefix (e.g. "feature")
+            // followed by "/issue-" and then one or more digits.
+            const regex = /^[^/]+\/issue-(\d+)/;
+            const match = branchName.match(regex);
+
+            if (match) {
+              // Extract the issue number from the branch name.
+              const issueNumber = parseInt(match[1], 10);
+              // Construct a URL to the branch.
+              const branchUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/tree/${branchName}`;
+              const commentBody = `A new branch [${branchName}](${branchUrl}) has been created for this issue.`;
+
+              console.log(`Linking branch to issue #${issueNumber}`);
+            
+              // Create a comment on the issue to link the branch.
+              await github.rest.issue.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: commentBody,
+              });
+            } else {
+              console.log('Branch name does not match the expected pattern. No issue linked.');
+            }
