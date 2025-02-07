@@ -3,8 +3,8 @@ import sys
 import signal
 import logging
 
-from db.client import MongoDbClient
-from bot.client import TelegramBot
+from db.mongo_client import MongoDbClient
+from bot.telegram_bot import TelegramBot
 
 # Configure logging
 logging.basicConfig(
