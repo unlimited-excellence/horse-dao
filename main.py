@@ -3,8 +3,9 @@ import sys
 import signal
 import logging
 
-from db.client import MongoDbClient
-from bot.client import TelegramBot
+from db.mongo_client import MongoDBClient
+from bot.telegram_bot import TelegramBot
+from services.user_service import UserService
 
 # Configure logging
 logging.basicConfig(
@@ -16,8 +17,9 @@ logger = logging.getLogger(__name__)
 def main():
     try:
         # Initialize the database and bot clients
-        db_client = MongoDbClient()
-        bot = TelegramBot()
+        db_client = MongoDBClient()
+        user_service = UserService(db_client)
+        bot = TelegramBot(user_service)
 
         # Define a shutdown handler to gracefully close resources.
         def shutdown(signum, frame):
