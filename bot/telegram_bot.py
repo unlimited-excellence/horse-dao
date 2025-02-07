@@ -9,6 +9,8 @@ from telegram.ext import (
     CallbackContext
 )
 
+from services.user_services import UserService
+
 # Configure logging
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
@@ -17,11 +19,13 @@ logger = logging.getLogger(__name__)
 
 
 class TelegramBot:
-    def __init__(self):
+    def __init__(self, user_service: UserService):
         # Validate environment variables
         self.token = os.getenv("TELEGRAM_BOT_TOKEN")
         if not self.token:
             raise ValueError("TELEGRAM_BOT_TOKEN environment variable is not set")
+
+        self.user_service = user_service
 
         try:
             self.app = Application.builder().token(self.token).build()
@@ -41,7 +45,14 @@ class TelegramBot:
         """Handler for /start command."""
         try:
             if update.message:
-                await update.message.reply_text("Hello! I'm your Telegram bot. Use /help to get a list of commands.")
+                user = update.message.from_user
+                registration_message = self.user_service.register_user(
+                    telegram_id=user.id,
+                    username=user.username,
+                    first_name=user.first_name,
+                    last_name=user.last_name
+                )
+                await update.message.reply_text(registration_message)
         except Exception as e:
             logger.error("Error in start handler", exc_info=e)
             if update.message:

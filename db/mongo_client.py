@@ -8,7 +8,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-class MongoDbClient:
+class MongoDBClient:
     """
     A MongoDB client that establishes a connection using environment variables.
 
@@ -49,7 +49,7 @@ class MongoDbClient:
             self.client.close()
             logger.info("Closed MongoDB connection")
 
-    def __enter__(self) -> "MongoDbClient":
+    def __enter__(self) -> "MongoDBClient":
         """Enter the runtime context related to this object."""
         return self
 
@@ -61,6 +61,6 @@ class MongoDbClient:
 # Example usage:
 if __name__ == "__main__":
     # Using the client as a context manager ensures the connection is closed
-    with MongoDbClient() as db_client:
+    with MongoDBClient() as db_client:
         # Access the database with db_client.database
         pass
