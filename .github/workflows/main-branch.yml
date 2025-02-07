@@ -1,0 +1,47 @@
+name: Main Branch Workflow
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  generate-git-badges:
+    name: Generate Git Badges
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Output git info
+        id: git_info
+        run: |
+          function format_size { echo $(numfmt --to iec --suffix B $1); }
+          function format_number { LC_ALL=en_US.UTF-8 printf "%'d\n" $1; }
+          echo "file_count=$(format_number $(git ls-files | wc -l))" >> $GITHUB_OUTPUT
+          echo "lines_of_code=$(find . -type f -name "*.py" -exec wc -l {} + | awk '{s+=$1} END {print s}')" >> $GITHUB_OUTPUT
+          git gc
+          echo "size=$(format_size $(($(git count-objects -v | grep 'size-pack: ' | sed 's/size-pack: //g' | tr -d '\n') * 1024)))" >> $GITHUB_OUTPUT
+        shell: bash
+
+      - name: Generate-Badge
+        uses: likespro/generate-badge@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          filename: |
+            (
+              "git-size"
+              "git-file-count"
+              "git-lines-of-code"
+            )
+          label: ("size" "files" "lines-of-code")
+          message: |
+            (
+              "${{ steps.git_info.outputs.size }}"
+              "${{ steps.git_info.outputs.file_count }}"
+              "${{ steps.git_info.outputs.lines_of_code }}"
+            )
+          namedLogo: ("git" "git" "git")
+          color: ("f1502f" "f1502f" "f1502f")
