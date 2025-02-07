@@ -3,7 +3,6 @@ name: Link Branch to Issue Workflow
 # This workflow triggers on creation of a new ref (branch or tag)
 on:
   create:
-    branches: '*'  # Only triggers on branch creation
 
 jobs:
   link-branch:
