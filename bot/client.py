@@ -27,3 +27,10 @@ class TelegramBot:
     def run(self):
         print("Running bot...")
         self.app.run_polling()
+
+    def stop(self):
+        """Stop the bot gracefully."""
+        if self.app.running:
+            print("Stopping bot...")
+            self.app.stop()
+            self.app.shutdown()
