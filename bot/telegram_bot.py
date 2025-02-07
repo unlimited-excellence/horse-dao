@@ -46,6 +46,9 @@ class TelegramBot:
         try:
             if update.message:
                 user = update.message.from_user
+                if not user or not user.id:
+                    await update.message.reply_text("User info unavailable.")
+                    return
                 registration_message = self.user_service.register_user(
                     telegram_id=user.id,
                     username=user.username,
