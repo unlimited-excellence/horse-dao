@@ -29,8 +29,19 @@ class TelegramBot:
             await update.message.reply_text("Sorry, something went wrong. Please try again later.")
 
     async def echo(self, update: Update, context: CallbackContext) -> None:
-        """Відповідає тим же повідомленням, яке отримує."""
-        await update.message.reply_text(f"Ви сказали: {update.message.text}")
+        """Echo back the message received."""
+        try:
+            # Validate input length
+            if len(update.message.text) > 4096:  # Telegram's message length limit
+                await update.message.reply_text("Message too long. Please send a shorter message.")
+                return
+            
+            # Sanitize input for display
+            sanitized_text = update.message.text.replace('<', '&lt;').replace('>', '&gt;')
+            await update.message.reply_text(f"You said: {sanitized_text}")
+        except Exception as e:
+            print(f"Error in echo handler: {e}")
+            await update.message.reply_text("Sorry, something went wrong. Please try again later.")
 
     def run(self):
         print("Running bot...")
