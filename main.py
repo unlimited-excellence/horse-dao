@@ -1,20 +1,45 @@
-if __name__ == '__main__':
+import os
+import sys
+import signal
+import logging
+
+from db.client import MongoDbClient
+from bot.client import TelegramBot
+
+# Configure logging
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
+)
+logger = logging.getLogger(__name__)
+
+
+def main():
     try:
+        # Initialize the database and bot clients
         db_client = MongoDbClient()
         bot = TelegramBot()
-        # Register shutdown handler
-        import signal
-        def shutdown(signum, frame):
-            print("Shutting down...")
-            bot.stop()  # Add stop method to TelegramBot
-            # Close database connection
-            db_client.close()  # Add close method to MongoDbClient
-            exit(0)
 
+        # Define a shutdown handler to gracefully close resources.
+        def shutdown(signum, frame):
+            logger.info("Received shutdown signal. Shutting down...")
+            try:
+                bot.stop()  # Make sure TelegramBot.stop() is implemented
+                db_client.close()  # Make sure MongoDbClient.close() is implemented
+            except Exception as e:
+                logger.exception("Error during shutdown")
+            sys.exit(0)
+
+        # Register shutdown signals
         signal.signal(signal.SIGINT, shutdown)
         signal.signal(signal.SIGTERM, shutdown)
 
+        # Run the bot (this is a blocking call)
         bot.run()
+
     except Exception as e:
-        print(f"Error: {e}")
-        exit(1)
+        logger.exception("Error during bot initialization or runtime")
+        sys.exit(1)
+
+
+if __name__ == '__main__':
+    main()
