@@ -10,3 +10,5 @@ class DatabaseWorker:
         self.database = self.client[database_name]
     def insert_one(self, collection: str, document: dict):
         self.database[collection].insert_one(document)
+    def find_one(self, collection: str, document: dict):
+        return self.database[collection].find_one(document)
