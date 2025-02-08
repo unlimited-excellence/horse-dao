@@ -2,11 +2,16 @@ import os
 
 from database.database_worker import DatabaseWorker
 from endpoints.telegram import TelegramBotService
+from services.MiscService import MiscService
 from services.UsersService import UsersService
 
 if __name__ == '__main__':
     print("Initializing MongoDB")
     databaseWorker = DatabaseWorker(os.getenv("MONGODB_URI"), os.getenv("MONGODB_DATABASE"))
+
+    print("Initializing MiscService")
+    misc_service = MiscService(databaseWorker)
+    config = misc_service.get_or_create_config()
 
     print("Initializing UsersService")
     users_service = UsersService(databaseWorker)
