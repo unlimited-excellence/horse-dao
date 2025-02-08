@@ -1,1 +1,2 @@
 pymongo[srv]~=4.7.3
+pytelegrambotapi~=4.26.0
