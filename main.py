@@ -17,11 +17,14 @@ if __name__ == '__main__':
     print("Initializing UsersService")
     users_service = UsersService(databaseWorker)
 
+    bot_token = os.getenv(token)
+    bot = telebot.TeleBot(bot_token)
+
     print("Initializing Telegram Bot")
-    telegram_bot_service = TelegramBotService(os.getenv("TELEGRAM_BOT_TOKEN"), users_service, None)
+    telegram_bot_service = TelegramBotService(os.getenv(token), users_service, None)
 
     print("Initializing NotificationsService")
-    notifications_service = NotificationsService(telegram_bot_service)
+    notifications_service = NotificationsService(bot)
     telegram_bot_service.notifications_service = notifications_service
 
     print("Running Telegram Bot")
