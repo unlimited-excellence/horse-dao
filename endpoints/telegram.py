@@ -24,6 +24,13 @@ class TelegramBotService:
             
             self.notifications_service.send_message(message.from_user.id, "Something going on")
 
+        @self.bot.message_handler(commands=['balance'])
+        def handle_balance_message(message):
+            user_get_balance = users_service.get_balance(message.chat.id)
+            if user_get_balance is None:
+                self.bot.send_message(message.from_user.id, "Please send /start")
+            else:
+                self.bot.send_message(message.from_user.id, "Your balance is: " + str(user_get_balance))
 
     def run(self):
         self.bot.infinity_polling()

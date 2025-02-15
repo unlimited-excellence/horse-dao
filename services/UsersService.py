@@ -16,3 +16,11 @@ class UsersService:
             return True
         else:
             return False
+    def get_balance(self, user_id: str) -> int | None:
+        user = self.databaseWorker.find_one('users', {
+            "userId": user_id
+        })
+        if user is None:
+            return None
+        else:
+            return user["balance"]
