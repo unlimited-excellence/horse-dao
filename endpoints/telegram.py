@@ -7,8 +7,7 @@ from services.NotificationsService import NotificationsService
 
 
 class TelegramBotService:
-    #def __init__(self, token: str, users_service: UsersService, notifications_service: NotificationsService):
-    def __init__(self, bot, users_service, notifications_service):
+    def __init__(self, bot: telebot.TeleBot, users_service: UsersService, notifications_service: NotificationsService):
         self.bot = bot
         self.users_service = users_service
         self.notifications_service = notifications_service
