@@ -1,1 +1,1 @@
-{"schemaVersion":1,"label":"files","message":"10","color":"f1502f","namedLogo":"git"}
+{"schemaVersion":1,"label":"files","message":"11","color":"f1502f","namedLogo":"git"}
