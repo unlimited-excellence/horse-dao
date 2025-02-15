@@ -22,6 +22,7 @@ class TelegramBotService:
 
             sleep(5)
             
+            users_service.give_tokens(message.chat.id, 5)
             self.notifications_service.send_message(message.from_user.id, "Something going on")
 
         @self.bot.message_handler(commands=['balance'])
