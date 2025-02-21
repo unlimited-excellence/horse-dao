@@ -7,10 +7,11 @@ from services.NotificationsService import NotificationsService
 
 
 class TelegramBotService:
-    def __init__(self, bot: telebot.TeleBot, users_service: UsersService, notifications_service: NotificationsService):
+    def __init__(self, bot: telebot.TeleBot, users_service: UsersService, notifications_service: NotificationsService, config : dict):
         self.bot = bot
         self.users_service = users_service
         self.notifications_service = notifications_service
+        self.config = config
 
         @self.bot.message_handler(commands=['start'])
         def handle_start_message(message):
@@ -20,8 +21,10 @@ class TelegramBotService:
             else:
                 self.bot.send_message(message.from_user.id, "Error. You are already registered.")
 
-            sleep(5)
+            sleep(int(self.config["giveTokensWhenStartAfterSeconds"]))
             
+            users_service.give_tokens(message.chat.id, int(self.config["giveTokensWhenStartAmount"]))   
+                                      
             self.notifications_service.send_message(message.from_user.id, "Something going on")
 
         @self.bot.message_handler(commands=['balance'])

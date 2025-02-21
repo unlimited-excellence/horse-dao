@@ -16,18 +16,18 @@ if __name__ == '__main__':
     misc_service = MiscService(databaseWorker)
     config = misc_service.get_or_create_config()
 
-    print("Initializing UsersService")
-    users_service = UsersService(databaseWorker)
-
     print("Initializing TeleBot")
     bot_token = os.getenv("TELEGRAM_BOT_TOKEN")
     bot = telebot.TeleBot(bot_token)
 
     print("Initializing NotificationsService")
     notifications_service = NotificationsService(bot)
+    
+    print("Initializing UsersService")
+    users_service = UsersService(databaseWorker, notifications_service)
 
     print("Initializing Telegram Bot")
-    telegram_bot_service = TelegramBotService(bot, users_service, notifications_service)
+    telegram_bot_service = TelegramBotService(bot, users_service, notifications_service, config)
 
     print("Running Telegram Bot")
     telegram_bot_service.run()
