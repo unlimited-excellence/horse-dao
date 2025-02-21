@@ -1,3 +1,4 @@
+import logging
 import os
 
 import telebot
@@ -9,25 +10,28 @@ from services.UsersService import UsersService
 from services.NotificationsService import NotificationsService
 
 if __name__ == '__main__':
-    print("Initializing MongoDB")
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    logging.info("Hello, World!")
+
+    logging.info("Initializing MongoDB")
     databaseWorker = DatabaseWorker(os.getenv("MONGODB_URI"), os.getenv("MONGODB_DATABASE"))
 
-    print("Initializing MiscService")
+    logging.info("Initializing MiscService")
     misc_service = MiscService(databaseWorker)
     config = misc_service.get_or_create_config()
 
-    print("Initializing TeleBot")
+    logging.info("Initializing TeleBot")
     bot_token = os.getenv("TELEGRAM_BOT_TOKEN")
     bot = telebot.TeleBot(bot_token)
 
-    print("Initializing NotificationsService")
+    logging.info("Initializing NotificationsService")
     notifications_service = NotificationsService(bot)
-    
-    print("Initializing UsersService")
+
+    logging.info("Initializing UsersService")
     users_service = UsersService(databaseWorker, notifications_service)
 
-    print("Initializing Telegram Bot")
+    logging.info("Initializing Telegram Bot")
     telegram_bot_service = TelegramBotService(bot, users_service, notifications_service, config)
 
-    print("Running Telegram Bot")
+    logging.warning("Running Telegram Bot")
     telegram_bot_service.run()
