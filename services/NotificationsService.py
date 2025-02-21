@@ -1,3 +1,5 @@
+import logging
+
 import telebot
 
 class NotificationsService:
@@ -6,4 +8,4 @@ class NotificationsService:
     
     def send_message(self, user_id: str, message: str):
         self.bot.send_message(user_id, text=message)
-        print(f"NotificationsService - Message \"{message}\" to {user_id} was send successfully")
+        logging.debug(f"NotificationsService - Message \"{message}\" to {user_id} was send successfully")
