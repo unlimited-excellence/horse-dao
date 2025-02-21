@@ -27,7 +27,7 @@ if __name__ == '__main__':
     users_service = UsersService(databaseWorker, notifications_service)
 
     print("Initializing Telegram Bot")
-    telegram_bot_service = TelegramBotService(bot, users_service, notifications_service)
+    telegram_bot_service = TelegramBotService(bot, users_service, notifications_service, config)
 
     print("Running Telegram Bot")
     telegram_bot_service.run()
