@@ -34,7 +34,28 @@ class UsersService:
             }
         })
         self.notifications_service.send_message(user_id, "Balance have changed by "+ str(amount) + ".\n" + "Your final balance is " + str(self.get_balance(user_id)))
-        
+    def link_codeforce(self, handle: str, user_id: str) -> str:
+        self.handle=handle
+        self.user_id=user_id
+        #response = requests.get(f"https://codeforces.com/api/user.info?handles={handle}&checkHistoricHandles=false")
+        #response_dict = response.json()
+        #self.codeforce_firstName = response_dict["result"][0].get("firstName", "No First Name")
+        if user_id is #codeforce_firstName :
+            self.databaseWorker.update_one('users',{
+            "userId": user_id
+            }, {
+                "$setOnInsert": {
+                    "codeforce": {
+                        "codeforce_handle": handle
+                    }
+                }
+            })
+            self.notifications_service.send_message(user_id, "Codeforce account is linked.")
+        else:
+            self.notifications_service.send_message(user_id, " ️Please set your First Name in your Codeforces account to your ID. This will help us identify you correctly.")
+
+
+
         #42bratuha
         # user = self.databaseWorker.find_one('users', {
         #     "userId": user_id
