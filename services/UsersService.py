@@ -1,3 +1,8 @@
+import logging
+from enum import EnumMeta, Enum
+
+import requests
+
 from database.database_worker import DatabaseWorker
 from services.NotificationsService import NotificationsService
 
@@ -34,31 +39,29 @@ class UsersService:
             }
         })
         self.notifications_service.send_message(user_id, "Balance have changed by "+ str(amount) + ".\n" + "Your final balance is " + str(self.get_balance(user_id)))
-    def link_codeforce(self, handle: str, user_id: str) -> str:
-        self.handle=handle
-        self.user_id=user_id
-        #response = requests.get(f"https://codeforces.com/api/user.info?handles={handle}&checkHistoricHandles=false")
-        #response_dict = response.json()
-        #self.codeforce_firstName = response_dict["result"][0].get("firstName", "No First Name")
-        if user_id is #codeforce_firstName :
+    class LinkCodeforcesResponse(Enum):
+        SUCCESS = 0
+        ERROR_USER_NOT_FOUND = 1
+        ERROR_INCORRECT_FIRST_NAME = 2
+
+    def link_codeforces(self, handle: str, user_id: str) -> LinkCodeforcesResponse:
+        response = requests.get(f"https://codeforces.com/api/user.info?handles={handle}&checkHistoricHandles=false")
+        response_dict = response.json()
+        if response_dict['status'] != "OK":
+            return self.LinkCodeforcesResponse.ERROR_USER_NOT_FOUND
+        codeforces_first_name = response_dict["result"][0].get("firstName", None)
+        if user_id == codeforces_first_name:
             self.databaseWorker.update_one('users',{
-            "userId": user_id
+                "userId": user_id
             }, {
-                "$setOnInsert": {
-                    "codeforce": {
-                        "codeforce_handle": handle
+                "$set": {
+                    "codeforces": {
+                        "handle": handle
                     }
                 }
             })
-            self.notifications_service.send_message(user_id, "Codeforce account is linked.")
+            return self.LinkCodeforcesResponse.SUCCESS
         else:
-            self.notifications_service.send_message(user_id, " ️Please set your First Name in your Codeforces account to your ID. This will help us identify you correctly.")
-
-
-
+            logging.debug(f"User {user_id} tried to link Codeforces account with handle {handle} but first name in Codeforces account is {codeforces_first_name}")
+            return self.LinkCodeforcesResponse.ERROR_INCORRECT_FIRST_NAME
         #42bratuha
-        # user = self.databaseWorker.find_one('users', {
-        #     "userId": user_id
-        # })
-        # user["balance"] += amount
-        # self.databaseWorker.insert_one('users', user)
