@@ -39,6 +39,38 @@ class UsersService:
             }
         })
         self.notifications_service.send_message(user_id, "Balance have changed by "+ str(amount) + ".\n" + "Your final balance is " + str(self.get_balance(user_id)))
+
+    def is_user_registered(self, user_id: str) -> bool:
+        user = self.databaseWorker.find_one('users', {
+            "userId": user_id
+        })
+        if user is None:
+            return False
+        return True
+    def transact(self, from_user : str, to_user : str, amount : int ) -> bool :
+        update_one_result = self.databaseWorker.update_one('users', {
+            "userId": from_user,
+            "balance":{
+                "$gte": amount
+            }
+        }, {
+            "$inc":{
+                "balance" : -amount
+            }
+        })
+        if update_one_result.modified_count == 0:
+            return False
+        self.databaseWorker.update_one('users', {
+            "userId" : to_user
+        }, {
+            "$inc": {
+                "balance" : amount
+            }
+        })
+        self.notifications_service.send_message(from_user,"You send " + str(amount) + " to " + to_user + ".\n" + "Now your balance is: " + str(self.get_balance(from_user)))  
+        self.notifications_service.send_message(to_user, "You received " + str(amount) + ".\n" + "From user " + str(from_user))
+        return True
+
     class LinkCodeforcesResponse(Enum):
         SUCCESS = 0
         ERROR_USER_NOT_FOUND = 1
@@ -65,3 +97,4 @@ class UsersService:
             logging.debug(f"User {user_id} tried to link Codeforces account with handle {handle} but first name in Codeforces account is {codeforces_first_name}")
             return self.LinkCodeforcesResponse.ERROR_INCORRECT_FIRST_NAME
         #42bratuha
+
