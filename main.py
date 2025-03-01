@@ -1,5 +1,6 @@
 import logging
 import os
+import threading
 
 import telebot
 
@@ -33,5 +34,14 @@ if __name__ == '__main__':
     logging.info("Initializing Telegram Bot")
     telegram_bot_service = TelegramBotService(bot, users_service, notifications_service, config)
 
+    
+    codeforces_thread = threading.Thread(target=)
+    codeforces_thread.start()
+
     logging.warning("Running Telegram Bot")
     telegram_bot_service.run()
+
+    # get_db_response()
+    # calculate_something
+    # get_db_response = 1500 ms
+    # calculate_something = 100
