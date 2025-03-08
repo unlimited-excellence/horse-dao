@@ -14,3 +14,5 @@ class DatabaseWorker:
         return self.database[collection].find_one(filter)
     def update_one(self, collection: str, filter: dict, update: dict):
         return self.database[collection].update_one(filter, update)
+    def find(self, collection: str, filter: dict):
+        return self.database[collection].find(filter)

@@ -1,5 +1,6 @@
 import logging
 import os
+import threading
 
 import telebot
 
@@ -8,6 +9,7 @@ from endpoints.telegram import TelegramBotService
 from services.MiscService import MiscService
 from services.UsersService import UsersService
 from services.NotificationsService import NotificationsService
+from services.CodeforcesService import CodeforcesService
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
@@ -32,6 +34,11 @@ if __name__ == '__main__':
 
     logging.info("Initializing Telegram Bot")
     telegram_bot_service = TelegramBotService(bot, users_service, notifications_service, config)
+
+    logging.info("Initializing CodeforcesService")
+    codeforces_service = CodeforcesService(databaseWorker, users_service, config)
+    codeforces_thread = threading.Thread(target=codeforces_service.mainloop)
+    codeforces_thread.start()
 
     logging.warning("Running Telegram Bot")
     telegram_bot_service.run()
