@@ -30,7 +30,7 @@ class UsersService:
             return None
         else:
             return user["balance"]
-    def give_tokens(self, user_id: str, amount: int):
+    def give_tokens(self, user_id: str, amount: int, message: str | None = None):
         self.databaseWorker.update_one('users', {
             "userId": user_id
         }, {
@@ -38,7 +38,11 @@ class UsersService:
                 "balance": amount
             }
         })
-        self.notifications_service.send_message(user_id, "Balance have changed by "+ str(amount) + ".\n" + "Your final balance is " + str(self.get_balance(user_id)))
+
+        if message is None:
+            message = "Balance have changed by "+ str(amount) + ".\n" + "Your final balance is " + str(self.get_balance(user_id))
+        
+        self.notifications_service.send_message(user_id, message)
 
     def is_user_registered(self, user_id: str) -> bool:
         user = self.databaseWorker.find_one('users', {
