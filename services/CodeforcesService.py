@@ -11,19 +11,14 @@ class CodeforcesService:
         self.users_service = users_service
         self.config = config
 
-           
-    def get_all_contests(self):
-        contest_list = None
-        try:
-            contest_list_response = requests.get(f"https://codeforces.com/api/contest.list?gym=false")
-            contest_list_response_dict = contest_list_response.json()
-            contest_list = list(contest_list_response_dict['result'])
-        except Exception as e:
-            logging.error(e)
-        
+
+    def get_contests(self):
+        contest_list_response = requests.get(f"https://codeforces.com/api/contest.list?gym=false")
+        contest_list_response_dict = contest_list_response.json()
+        contest_list = list(contest_list_response_dict['result'])
         return contest_list
-        
-    def get_all_registred_users(self):
+
+    def get_registered_users_with_handle(self):
         registered_users_with_handle = self.database_worker.find('users', {
             'codeforces.handle': {
                 '$exists': True
@@ -36,22 +31,22 @@ class CodeforcesService:
 
     def filter_for_contests(self, contest: dict):
         # condition contest finished
-        if not (str(contest["phase"]) == "FINISHED"):
+        if str(contest["phase"]) != "FINISHED":
             return False
         
         # condition contest finished more than *some* days before
-        if not (int(contest['relativeTimeSeconds']) - int(contest['durationSeconds']) > int(self.config["codeforces"]["proceed_contests_after"]) / 1000):
+        if int(contest['relativeTimeSeconds']) - int(contest['durationSeconds']) <= int(self.config["codeforces"]["proceed_contests_after"]) / 1000:
             return False
         
         # condition contest finished less than *some* days before
-        if not (int(contest['relativeTimeSeconds']) - int(contest['durationSeconds']) < int(self.config["codeforces"]["not_proceed_contests_after"]) / 1000):
+        if int(contest['relativeTimeSeconds']) - int(contest['durationSeconds']) >= int(self.config["codeforces"]["not_proceed_contests_after"]) / 1000:
             return False
         
-        # condition exist at least one rating changes
+        # condition exists at least one rating changes
         rating_changes_request = requests.get(f"https://codeforces.com/api/contest.ratingChanges?contestId={contest['id']}").json()
-        if not (rating_changes_request["status"] == 'OK'):
+        if rating_changes_request["status"] != 'OK':
             return False
-        if not (len(list(rating_changes_request["result"])) > 0):
+        if len(list(rating_changes_request["result"])) <= 0:
             return False
 
         return True
@@ -59,19 +54,15 @@ class CodeforcesService:
     def calculate_contest_coefficient(self, contest):
         # 1 - Div4; 1.5 - Div3; 2 - Div2; 2.5 - Div1+Div2; 3 - Div1
 
-        if (str(contest["name"]).find("Div. 1 + Div. 2") != -1):
+        if str(contest["name"]).find("Div. 1 + Div. 2") != -1:
             return 2.5
-        
-        if (str(contest["name"]).find("Div. 1") != -1):
+        if str(contest["name"]).find("Div. 1") != -1:
             return 3
-        
-        if (str(contest["name"]).find("Div. 2") != -1):
+        if str(contest["name"]).find("Div. 2") != -1:
             return 2
-        
-        if (str(contest["name"]).find("Div. 3") != -1):
+        if str(contest["name"]).find("Div. 3") != -1:
             return 1.5
-        
-        if (str(contest["name"]).find("Div. 4") != -1):
+        if str(contest["name"]).find("Div. 4") != -1:
             return 1
         
         return None
@@ -88,15 +79,12 @@ class CodeforcesService:
         # P - кількість учасників у змаганні загалом
         # S - позиція учасника в рейтингу
         # M - кількість учасників у команді користувача
-        # K - коефіцієнт, який в залежності від рівня контесту
+        # K - коефіцієнт, який залежить від рівня контесту
         all_participants = list(filter(self.filter_for_participants, list(requests.get(f"https://codeforces.com/api/contest.standings?contestId={contest['id']}&showUnofficial=false").json()["result"]["rows"])))
-
 
         P = len(all_participants)
         K = self.calculate_contest_coefficient(contest)
-
-        logging.info(f"Contest {contest['name']} has K = {K}")
-        logging.info(f"Contest {contest['name']} has P = {P}")
+        logging.debug(f"CODEFORCES_SERVICE: Proceeding contest {contest['name']} with K = {K} and P = {P}")
         if K is None:
             return
 
@@ -114,12 +102,12 @@ class CodeforcesService:
                 if not (registered_users_with_handle.get(handle) is not None):
                     continue
 
-                db_record = self.database_worker.find_one("proceeded-results", {
+                is_handle_proceeded = self.database_worker.find_one("proceeded-results", {
                     "platform": "codeforces", 
                     "contestId": contest['id'], 
                     "proceeded_handle": handle 
                 })
-                if not (db_record is None):
+                if is_handle_proceeded is not None:
                     continue
 
                 reward_amount = (((P - S + 1.) / P) * K * 100.) / M
@@ -128,21 +116,25 @@ class CodeforcesService:
                     "contestId": contest['id'], 
                     "proceeded_handle": handle
                 })
-                self.users_service.give_tokens(registered_users_with_handle[handle], reward_amount, f"You received {reward_amount} HORSE for your performance in {contest['name']}.")
+                self.users_service.give_tokens(registered_users_with_handle[handle], reward_amount, f"You received {reward_amount} HORSE for your performance in {contest['name']}. Congratulations!")
 
-                logging.info(f"User {registered_users_with_handle[handle]} with handle {handle} received {reward_amount} for his performance in contest {contest['name']}")
+                logging.debug(f"CODEFORCES_SERVICE: User {registered_users_with_handle[handle]} with handle {handle} received {reward_amount} for his performance in contest {contest['name']}")
         
 
     def mainloop(self):
         while True:
-            all_contests_list = self.get_all_contests()
-            contests_to_process = list(filter(self.filter_for_contests, all_contests_list))
+            try:
+                all_contests_list = self.get_contests()
+                contests_to_process = list(filter(self.filter_for_contests, all_contests_list))
 
-            logging.info(contests_to_process)
+                logging.info(contests_to_process)
 
-            registered_users_with_handle_dict = self.get_all_registred_users()
-            
-            for contest in contests_to_process:
-                self.calculate_reward(contest, registered_users_with_handle_dict)
+                registered_users_with_handle_dict = self.get_registered_users_with_handle()
 
-            time.sleep(int(self.config['codeforces']['refresh_contests_results_cooldown']) / 1000)
+                for contest in contests_to_process:
+                    self.calculate_reward(contest, registered_users_with_handle_dict)
+
+                time.sleep(int(self.config['codeforces']['refresh_contests_results_cooldown']) / 1000)
+            except Exception as e:
+                logging.error(f"CODEFORCES_SERVICE: {e}")
+                time.sleep(60)

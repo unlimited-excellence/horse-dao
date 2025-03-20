@@ -12,7 +12,7 @@ from services.NotificationsService import NotificationsService
 from services.CodeforcesService import CodeforcesService
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(levelname)s %(message)s")
     logging.info("Hello, World!")
 
     logging.info("Initializing MongoDB")
@@ -40,5 +40,5 @@ if __name__ == '__main__':
     codeforces_thread = threading.Thread(target=codeforces_service.mainloop)
     codeforces_thread.start()
 
-    logging.warning("Running Telegram Bot")
+    logging.info("Running Telegram Bot")
     telegram_bot_service.run()
