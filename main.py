@@ -23,7 +23,7 @@ if __name__ == '__main__':
     config = misc_service.get_or_create_config()
 
     logging.info("Initializing TeleBot")
-    bot_token = os.getenv("TELEGRAM_BOT_TOKEN")
+    bot_token = config["telegram"]["BOT_TOKEN"]
     bot = telebot.TeleBot(bot_token)
 
     logging.info("Initializing NotificationsService")
