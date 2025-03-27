@@ -1,6 +1,8 @@
+import hashlib
 import logging
 import os
 import threading
+import time
 
 import telebot
 
@@ -14,6 +16,10 @@ from services.CodeforcesService import CodeforcesService
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(levelname)s %(message)s")
     logging.info("Hello, World!")
+    time_hash = time.time()
+    logging.info(time_hash)
+    logging.info(f"123456/contest.list?apiKey=KEY&time={time_hash}&gym=false#SECRET")
+    logging.info(hashlib.sha3_512(f"123456/contest.list?apiKey=KEY&time={time_hash}&gym=false#SECRET".encode()).hexdigest())
 
     logging.info("Initializing MongoDB")
     databaseWorker = DatabaseWorker(os.getenv("MONGODB_URI"), os.getenv("MONGODB_DATABASE"))
