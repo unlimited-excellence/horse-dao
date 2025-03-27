@@ -12,6 +12,9 @@ from services.NotificationsService import NotificationsService
 from services.CodeforcesService import CodeforcesService
 
 if __name__ == '__main__':
+    assert os.getenv("MONGODB_URI") is not None, "MONGODB_URI environmental variable is not set"
+    assert os.getenv("MONGODB_DATABASE") is not None, "MONGODB_DATABASE environmental variable is not set"
+
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     logging.info("Hello, World!")
 
