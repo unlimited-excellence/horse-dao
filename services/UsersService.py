@@ -88,7 +88,7 @@ class UsersService:
             return self.LinkCodeforcesResponse.ERROR_USER_NOT_FOUND
         is_registered = self.databaseWorker.find_one('users', {
             "codeforce.handle" : handle
-        })
+        }, ray_id)
         if is_registered is not None:
             return self.LinkCodeforcesResponse.ERROR_ALREADY_USED_ACCOUNT
         codeforces_first_name = response_dict["result"][0].get("firstName", None)
