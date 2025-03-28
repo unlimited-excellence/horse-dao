@@ -79,12 +79,18 @@ class UsersService:
         SUCCESS = 0
         ERROR_USER_NOT_FOUND = 1
         ERROR_INCORRECT_FIRST_NAME = 2
+        ERROR_ALREADY_USED_ACCOUNT = 3
 
     def link_codeforces(self, handle: str, user_id: str) -> LinkCodeforcesResponse:
         response = requests.get(f"https://codeforces.com/api/user.info?handles={handle}&checkHistoricHandles=false")
         response_dict = response.json()
         if response_dict['status'] != "OK":
             return self.LinkCodeforcesResponse.ERROR_USER_NOT_FOUND
+        is_registered = self.databaseWorker.find_one('users', {
+            "codeforce.handle" : handle
+        }, ray_id)
+        if is_registered is not None:
+            return self.LinkCodeforcesResponse.ERROR_ALREADY_USED_ACCOUNT
         codeforces_first_name = response_dict["result"][0].get("firstName", None)
         if user_id == codeforces_first_name:
             self.databaseWorker.update_one('users',{
@@ -101,4 +107,3 @@ class UsersService:
             logging.debug(f"User {user_id} tried to link Codeforces account with handle {handle} but first name in Codeforces account is {codeforces_first_name}")
             return self.LinkCodeforcesResponse.ERROR_INCORRECT_FIRST_NAME
         #42bratuha
-
