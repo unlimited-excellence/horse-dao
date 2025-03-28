@@ -73,7 +73,7 @@ jobs:
           tag_name: ${{ env.VERSION }}
           body_path: ./CHANGELOG.md
           files: |
-            .
+            *
 
   generate-git-badges:
     name: Generate Git Badges
