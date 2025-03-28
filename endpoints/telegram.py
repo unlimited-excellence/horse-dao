@@ -26,12 +26,16 @@ class TelegramBotService:
                 self.bot.send_message(message.from_user.id, "Account was created. Your ID is " + str(message.from_user.id) + "\nLink your account to Codeforces to start earning HORSE tokens for participating in contests. To link your account write command /link codeforces <your_handle>" )
             else:
                 self.bot.send_message(message.from_user.id, "Error. You are already registered.")
+         
+        @self.bot.message_handler(commands=['help'])
+        def handle_help_message(message):
+            self.bot.send_message(message.from_user.id, f"Your Account ID: {message.from_user.id}" + R"""
 
-            sleep(int(self.config["giveTokensWhenStartAfterSeconds"]))
-            
-            users_service.give_tokens(str(message.chat.id), int(self.config["giveTokensWhenStartAmount"]), ray_id)
-                                      
-            self.notifications_service.send_message(str(message.chat.id), "Something going on", ray_id)
+Commands:
+• /help - get help
+• /balance - get your balance
+• /pay <to_user_id> <amount> - send tokens to another user
+• /link codeforces <your_handle> - link your account to Codeforces to start earning HORSE tokens for participating in contests""")
 
         @self.bot.message_handler(commands=['balance'])
         def handle_balance_message(message):
@@ -79,6 +83,8 @@ class TelegramBotService:
                         self.bot.send_message(message.from_user.id, "Error. Codeforces account with this handle not found.")
                     elif result == users_service.LinkCodeforcesResponse.ERROR_INCORRECT_FIRST_NAME:
                         self.bot.send_message(message.from_user.id, f" ️Error. Please set your First Name in English in your Codeforces account to your ID ({message.chat.id}). This will help us identify you correctly. Please note that it may take up to 5 minutes to bot to see changes in your name. You can change your first name back later.")
+                    elif result == users_service.LinkCodeforcesResponse.ERROR_ALREADY_USED_ACCOUNT:
+                        self.bot.send_message(message.from_user.id, f" ️Error. Account {user_handle} is already linked. Account on Codeforces can be linked only to one person.")
                 else:
                     self.bot.send_message(message.from_user.id, f"Unsupported platform '{platform}'.\nSupported platforms: codeforces")
             except Exception as e:

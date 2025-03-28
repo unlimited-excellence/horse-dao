@@ -16,8 +16,9 @@ class MiscService:
             config = {
                 "type": "config",
                 "createdAt": datetime.now(),
-                "giveTokensWhenStartAfterSeconds" : 5,
-                "giveTokensWhenStartAmount" : 10,
+                "telegram": {
+                    "BOT_TOKEN": "<TOKEN>"
+                },
                 "codeforces": {
                     "refresh_contests_results_cooldown": 1*24*60*60*1000,
                     "proceed_contests_after": 3*24*60*60*1000,

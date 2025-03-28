@@ -93,6 +93,7 @@ class UsersService:
         SUCCESS = 0
         ERROR_USER_NOT_FOUND = 1
         ERROR_INCORRECT_FIRST_NAME = 2
+        ERROR_ALREADY_USED_ACCOUNT = 3
 
     def link_codeforces(self, handle: str, user_id: str, ray_id: int = -1) -> LinkCodeforcesResponse:
         logging.debug(f"USERS_SERVICE: {ray_id} - link_codeforces({handle}, {user_id})")
@@ -101,6 +102,11 @@ class UsersService:
         if response_dict['status'] != "OK":
             logging.debug(f"USERS_SERVICE: {ray_id} - response={self.LinkCodeforcesResponse.ERROR_USER_NOT_FOUND.name}")
             return self.LinkCodeforcesResponse.ERROR_USER_NOT_FOUND
+        is_registered = self.databaseWorker.find_one('users', {
+            "codeforce.handle" : handle
+        }, ray_id)
+        if is_registered is not None:
+            return self.LinkCodeforcesResponse.ERROR_ALREADY_USED_ACCOUNT
         codeforces_first_name = response_dict["result"][0].get("firstName", None)
         if user_id == codeforces_first_name:
             self.databaseWorker.update_one('users',{
@@ -119,4 +125,3 @@ class UsersService:
             logging.debug(f"USERS_SERVICE: {ray_id} - response={self.LinkCodeforcesResponse.ERROR_INCORRECT_FIRST_NAME.name}")
             return self.LinkCodeforcesResponse.ERROR_INCORRECT_FIRST_NAME
         #42bratuha
-
