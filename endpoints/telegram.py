@@ -24,11 +24,16 @@ class TelegramBotService:
             else:
                 self.bot.send_message(message.from_user.id, "Error. You are already registered.")
 
-            sleep(int(self.config["giveTokensWhenStartAfterSeconds"]))
-            
-            users_service.give_tokens(str(message.chat.id), int(self.config["giveTokensWhenStartAmount"]))
-                                      
-            self.notifications_service.send_message(str(message.chat.id), "Something going on")
+        @self.bot.message_handler(commands=['help'])
+        def handle_help_message(message):
+            self.bot.send_message(message.from_user.id, f"Your Account ID: {message.from_user.id}" + R"""
+
+Commands:
+• /help - get help
+• /balance - get your balance
+• /pay <to_user_id> <amount> - send tokens to another user
+• /link codeforces <your_handle> - link your account to Codeforces to start earning HORSE tokens for participating in contests""")
+
 
         @self.bot.message_handler(commands=['balance'])
         def handle_balance_message(message):
