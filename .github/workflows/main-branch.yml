@@ -37,9 +37,6 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      - name: Change wrapper permissions
-        run: chmod +x ./gradlew
-
       - name: Build and push Docker image
         id: push
         uses: docker/build-push-action@v6
@@ -76,7 +73,7 @@ jobs:
           tag_name: ${{ env.VERSION }}
           body_path: ./CHANGELOG.md
           files: |
-            ./
+            .
 
   generate-git-badges:
     name: Generate Git Badges
