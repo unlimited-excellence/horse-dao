@@ -161,5 +161,5 @@ class CodeforcesService:
 
                 time.sleep(int(self.config['codeforces']['refresh_contests_results_cooldown']) / 1000)
             except Exception as e:
-                logging.error(f"CODEFORCES_SERVICE: {e.with_traceback()}")
+                logging.error(f"CODEFORCES_SERVICE: {e.with_traceback(None)}")
                 time.sleep(60)
