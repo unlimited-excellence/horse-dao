@@ -94,27 +94,31 @@ jobs:
         run: |
           aws ecs describe-task-definition \
             --task-definition ${{ env.TASK_DEF_NAME }} \
-            --query "taskDefinition | {
-              family,
-              taskRoleArn,
-              executionRoleArn,
-              networkMode,
-              containerDefinitions,
-              volumes,
-              placementConstraints,
-              requiresCompatibilities,
-              cpu,
-              memory,
-              tags,
-              pidMode,
-              ipcMode,
-              proxyConfiguration,
-              inferenceAccelerators,
-              ephemeralStorage,
-              runtimePlatform,
-              enableFaultInjection
-            }" > task-definition.json
-
+            --output json > raw-task-def.json
+        
+      - name: Clean up task definition for registration
+        run: |
+          jq '.taskDefinition | {
+            family,
+            taskRoleArn,
+            executionRoleArn,
+            networkMode,
+            containerDefinitions,
+            volumes,
+            placementConstraints,
+            requiresCompatibilities,
+            cpu,
+            memory,
+            tags,
+            pidMode,
+            ipcMode,
+            proxyConfiguration,
+            inferenceAccelerators,
+            ephemeralStorage,
+            runtimePlatform,
+            enableFaultInjection
+          }' raw-task-def.json > task-definition.json
+        
       - name: Update container image in task definition
         run: |
           cat task-definition.json | \
