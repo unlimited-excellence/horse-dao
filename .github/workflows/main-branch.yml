@@ -61,7 +61,8 @@ jobs:
       id-token: write
       contents: read
     env:
-      AWS_REGION: eu-central-1
+      AWS_REGION: eu-north-1
+      AWS_DEFAULT_REGION: eu-north-1
       CLUSTER_NAME: unlimited-excellence-cluster
       SERVICE_NAME: horse-project-service
       TASK_DEF_NAME: horse-project-task
