@@ -118,7 +118,8 @@ jobs:
             ephemeralStorage,
             runtimePlatform,
             enableFaultInjection
-          }' raw-task-def.json > task-definition.json
+          } | with_entries(select(.value != null))' \
+          raw-task-def.json > task-definition.json
 
       - name: Update container image in task definition
         run: |
