@@ -84,8 +84,8 @@ class UsersService:
                 "balance" : amount
             }
         }, ray_id)
-        self.notifications_service.send_message(from_user,"You have sent " + str(amount) + " to " + to_user + ".\n" + "Now your balance is: " + str(self.get_balance(from_user, ray_id)), ray_id)
-        self.notifications_service.send_message(to_user, "You received " + str(amount) + ".\n" + "From user " + str(from_user), ray_id)
+        self.notifications_service.send_message(from_user,"You have sent " + str(amount) + " to user " + to_user + ".\n" + "Now your balance is: " + str(self.get_balance(from_user, ray_id)), ray_id)
+        self.notifications_service.send_message(to_user, "You received " + str(amount) + " from user " + str(from_user), ray_id)
         logging.debug(f"USERS_SERVICE: {ray_id} - response=True")
         return True
 
