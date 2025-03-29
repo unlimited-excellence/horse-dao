@@ -94,7 +94,26 @@ jobs:
         run: |
           aws ecs describe-task-definition \
             --task-definition ${{ env.TASK_DEF_NAME }} \
-            --query taskDefinition > task-definition.json
+            --query "taskDefinition | {
+              family,
+              taskRoleArn,
+              executionRoleArn,
+              networkMode,
+              containerDefinitions,
+              volumes,
+              placementConstraints,
+              requiresCompatibilities,
+              cpu,
+              memory,
+              tags,
+              pidMode,
+              ipcMode,
+              proxyConfiguration,
+              inferenceAccelerators,
+              ephemeralStorage,
+              runtimePlatform,
+              enableFaultInjection
+            }" > task-definition.json
 
       - name: Update container image in task definition
         run: |
