@@ -3,6 +3,7 @@ name: Main Branch Workflow
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   build-and-push-docker:
@@ -55,6 +56,7 @@ jobs:
 
   deploy-to-ecs:
     name: Deploy to ECS
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     needs: build-and-push-docker
     permissions:
@@ -82,7 +84,6 @@ jobs:
       - name: Validate image exists in GHCR using Docker
         run: |
           echo "🔍 Checking if image $IMAGE_URI exists in GHCR via Docker..."
-
           if docker manifest inspect "$IMAGE_URI" > /dev/null 2>&1; then
             echo "✅ Image exists: $IMAGE_URI"
           else
@@ -95,7 +96,7 @@ jobs:
           aws ecs describe-task-definition \
             --task-definition ${{ env.TASK_DEF_NAME }} \
             --output json > raw-task-def.json
-        
+
       - name: Clean up task definition for registration
         run: |
           jq '.taskDefinition | {
@@ -118,7 +119,7 @@ jobs:
             runtimePlatform,
             enableFaultInjection
           }' raw-task-def.json > task-definition.json
-        
+
       - name: Update container image in task definition
         run: |
           cat task-definition.json | \
@@ -143,7 +144,6 @@ jobs:
 
   create-release:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -168,7 +168,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
