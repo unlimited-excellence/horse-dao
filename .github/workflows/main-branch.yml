@@ -78,19 +78,16 @@ jobs:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHubActionsDeployRole
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Validate image exists in GHCR (public)
+      - name: Validate image exists in GHCR using Docker
         run: |
-          echo "🔍 Checking if image $IMAGE_URI exists (public)..."
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-            -H "Accept: application/vnd.oci.image.manifest.v1+json" \
-            https://ghcr.io/v2/unlimited-excellence/horse-dao/manifests/main)
+          echo "🔍 Checking if image $IMAGE_URI exists in GHCR via Docker..."
 
-          if [ "$STATUS" -ne 200 ]; then
-            echo "❌ Image not found in GHCR (HTTP $STATUS) — aborting deploy."
+          if docker manifest inspect "$IMAGE_URI" > /dev/null 2>&1; then
+            echo "✅ Image exists: $IMAGE_URI"
+          else
+            echo "❌ Image not found or inaccessible: $IMAGE_URI"
             exit 1
           fi
-
-          echo "✅ Image exists in GHCR."
 
       - name: Download current ECS task definition
         run: |
