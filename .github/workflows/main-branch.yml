@@ -78,11 +78,11 @@ jobs:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHubActionsDeployRole
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Validate image exists in GHCR
+      - name: Validate image exists in GHCR (public)
         run: |
-          echo "🔍 Checking if image $IMAGE_URI exists..."
+          echo "🔍 Checking if image $IMAGE_URI exists (public)..."
           STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.oci.image.manifest.v1+json" \
             https://ghcr.io/v2/unlimited-excellence/horse-dao/manifests/main)
 
           if [ "$STATUS" -ne 200 ]; then
