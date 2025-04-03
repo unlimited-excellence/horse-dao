@@ -19,7 +19,7 @@ if __name__ == '__main__':
     assert os.getenv("MONGODB_URI") is not None, "MONGODB_URI environmental variable is not set"
     assert os.getenv("MONGODB_DATABASE") is not None, "MONGODB_DATABASE environmental variable is not set"
     
-    logging.info("Hello, World!")
+    logging.info("Hello, Denys!")
     time_hash = time.time()
     logging.info(time_hash)
     logging.info(f"123456/contest.list?apiKey=KEY&time={time_hash}&gym=false#SECRET")
