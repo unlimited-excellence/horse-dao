@@ -54,94 +54,37 @@ jobs:
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
 
-  deploy-to-ecs:
-    name: Deploy to ECS
+  deploy-to-ec2:
+    name: Deploy to EC2
     if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     needs: build-and-push-docker
-    permissions:
-      id-token: write
-      contents: read
-    env:
-      AWS_REGION: eu-north-1
-      AWS_DEFAULT_REGION: eu-north-1
-      CLUSTER_NAME: unlimited-excellence-cluster
-      SERVICE_NAME: horse-project-service
-      TASK_DEF_NAME: horse-project-task
-      CONTAINER_NAME: horse-project
-      IMAGE_URI: ghcr.io/unlimited-excellence/horse-dao:main
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Configure AWS credentials via OIDC
-        uses: aws-actions/configure-aws-credentials@v2
+      - name: Deploy container via SSH
+        uses: appleboy/ssh-action@v0.1.8
         with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHubActionsDeployRole
-          aws-region: ${{ env.AWS_REGION }}
-
-      - name: Validate image exists in GHCR using Docker
-        run: |
-          echo "🔍 Checking if image $IMAGE_URI exists in GHCR via Docker..."
-          if docker manifest inspect "$IMAGE_URI" > /dev/null 2>&1; then
-            echo "✅ Image exists: $IMAGE_URI"
-          else
-            echo "❌ Image not found or inaccessible: $IMAGE_URI"
-            exit 1
-          fi
-
-      - name: Download current ECS task definition
-        run: |
-          aws ecs describe-task-definition \
-            --task-definition ${{ env.TASK_DEF_NAME }} \
-            --output json > raw-task-def.json
-
-      - name: Clean up task definition for registration
-        run: |
-          jq '.taskDefinition | {
-            family,
-            taskRoleArn,
-            executionRoleArn,
-            networkMode,
-            containerDefinitions,
-            volumes,
-            placementConstraints,
-            requiresCompatibilities,
-            cpu,
-            memory,
-            tags,
-            pidMode,
-            ipcMode,
-            proxyConfiguration,
-            inferenceAccelerators,
-            ephemeralStorage,
-            runtimePlatform,
-            enableFaultInjection
-          } | with_entries(select(.value != null))' \
-          raw-task-def.json > task-definition.json
-
-      - name: Update container image in task definition
-        run: |
-          cat task-definition.json | \
-            jq '.containerDefinitions[0].image = "${{ env.IMAGE_URI }}"' \
-            > new-task-def.json
-
-      - name: Register new task definition revision
-        id: register-task-def
-        run: |
-          TASK_DEF_ARN=$(aws ecs register-task-definition \
-            --cli-input-json file://new-task-def.json \
-            --query 'taskDefinition.taskDefinitionArn' \
-            --output text)
-          echo "TASK_DEF_ARN=$TASK_DEF_ARN" >> $GITHUB_ENV
-
-      - name: Update ECS service with new task definition
-        run: |
-          aws ecs update-service \
-            --cluster ${{ env.CLUSTER_NAME }} \
-            --service ${{ env.SERVICE_NAME }} \
-            --task-definition ${{ env.TASK_DEF_ARN }}
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
+          script: |
+            echo "Stopping old container if exists..."
+            docker stop my-running-container || true
+            docker rm my-running-container || true
+      
+            echo "Pulling fresh image from GHCR..."
+            docker pull ghcr.io/unlimited-excellence/horse-dao:main
+      
+            echo "Starting container..."
+            docker run -d \
+              --name my-running-container \
+              -p 80:8080 \
+              -e MONGODB_URI="${{ secrets.MONGODB_URI }}" \
+              -e MONGODB_DATABASE="${{ secrets.MONGODB_DATABASE }}" \
+              ghcr.io/unlimited-excellence/horse-dao:main
 
   create-release:
     runs-on: ubuntu-latest
