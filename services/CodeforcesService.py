@@ -51,9 +51,12 @@ class CodeforcesService:
             return False
         
         # condition contest finished more than *some* days before
-        if not contest.__contains__('relativeTimeSeconds') or int(contest['relativeTimeSeconds']) - int(contest['durationSeconds']) <= int(self.config["codeforces"]["proceed_contests_after"]) / 1000:
-            return False
-        
+        if not is_group_contest:
+            if not contest.__contains__('relativeTimeSeconds') or int(contest['relativeTimeSeconds']) - int(contest['durationSeconds']) <= int(self.config["codeforces"]["public_contest_postprocess_delay_sec"]) / 1000:
+                return False
+        else:
+            if not contest.__contains__('relativeTimeSeconds') or int(contest['relativeTimeSeconds']) - int(contest['durationSeconds']) <= int(self.config["codeforces"]["private_contest_postprocess_delay_sec"]) / 1000:
+                return False
         # condition contest finished less than *some* days before
         if int(contest['relativeTimeSeconds']) - int(contest['durationSeconds']) >= int(self.config["codeforces"]["not_proceed_contests_after"]) / 1000:
             return False
