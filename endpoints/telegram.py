@@ -82,7 +82,7 @@ Commands:
                     elif result == users_service.LinkCodeforcesResponse.ERROR_USER_NOT_FOUND:
                         self.bot.send_message(message.from_user.id, "Error. Codeforces account with this handle not found.")
                     elif result == users_service.LinkCodeforcesResponse.ERROR_INCORRECT_FIRST_NAME:
-                        self.bot.send_message(message.from_user.id, f" ️Error. Please set your First Name in English in your Codeforces account to your ID ({message.chat.id}). This will help us identify you correctly. Please note that it may take up to 5 minutes to bot to see changes in your name. You can change your first name back later.")
+                        self.bot.send_message(message.from_user.id, f" ️Please set your First Name in English in your Codeforces account to your ID ({message.chat.id}). This will help us identify you correctly. Then enter the same command. Please note that it may take up to 5 minutes to bot to see changes in your name. You can change your first name back later.")
                     elif result == users_service.LinkCodeforcesResponse.ERROR_ALREADY_USED_ACCOUNT:
                         self.bot.send_message(message.from_user.id, f" ️Error. Account {user_handle} is already linked. Account on Codeforces can be linked only to one person.")
                 else:
