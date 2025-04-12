@@ -21,10 +21,12 @@ class MiscService:
                 },
                 "codeforces": {
                     "refresh_contests_results_cooldown": 1*24*60*60*1000,
-                    "proceed_contests_after": 3*24*60*60*1000,
+                    "private_contest_postprocess_delay_sec": 10*60*1000,
+                    "public_contest_postprocess_delay_sec": 3*24*60*60*1000,
                     "not_proceed_contests_after": 14*24*60*60*1000,
                     "APIKey": "<KEY>",
                     "APISecret": "<SECRET>"
+
                 }
             }
             self.databaseWorker.insert_one('misc', config)
