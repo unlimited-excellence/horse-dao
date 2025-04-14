@@ -74,6 +74,8 @@ class CodeforcesService:
     def calculate_contest_coefficient(contest):
         # 1 - Div4; 1.5 - Div3; 2 - Div2; 2.5 - Div1+Div2; 3 - Div1
 
+        if str(contest["name"]).find("Horse.Run()") != -1:
+            return 3
         if str(contest["name"]).find("Div. 1 + Div. 2") != -1:
             return 2.5
         if str(contest["name"]).find("Div. 1") != -1:
