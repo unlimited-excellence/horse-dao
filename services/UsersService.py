@@ -51,7 +51,7 @@ class UsersService:
             message = "Balance have changed by "+ str(amount) + ".\n" + f"Your final balance is {user_balance}"
 
         logging.debug(f"USERS_SERVICE: {ray_id} - Successfully given tokens")
-        self.notifications_service.send_message(user_id, message.replace("%AMOUNT%", str(amount)).replace("%BALANCE", user_balance), ray_id)
+        self.notifications_service.send_message(user_id, message.replace("%AMOUNT%", str(amount)).replace("%BALANCE%", user_balance), ray_id)
 
     def is_user_registered(self, user_id: str, ray_id: int = -1) -> bool:
         logging.debug(f"USERS_SERVICE: {ray_id} - is_user_registered({user_id})")
