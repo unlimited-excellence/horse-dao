@@ -51,7 +51,7 @@ class UsersService:
             message = "Balance have changed by "+ str(amount) + ".\n" + f"Your final balance is {user_balance}"
 
         logging.debug(f"USERS_SERVICE: {ray_id} - Successfully given tokens")
-        self.notifications_service.send_message(user_id, message.replace("\\n", "\n").replace("%AMOUNT%", str(amount)).replace("%BALANCE", user_balance), ray_id)
+        self.notifications_service.send_message(user_id, message.replace("%AMOUNT%", str(amount)).replace("%BALANCE", user_balance), ray_id)
 
     def is_user_registered(self, user_id: str, ray_id: int = -1) -> bool:
         logging.debug(f"USERS_SERVICE: {ray_id} - is_user_registered({user_id})")
@@ -72,6 +72,14 @@ class UsersService:
         })
         logging.debug(f"USERS_SERVICE: {ray_id} - response={user is not None}")
         return user is not None
+
+    def announce(self, message: str, ray_id: int = -1):
+        logging.debug(f"USERS_SERVICE: {ray_id} - announce({message})")
+        users = self.databaseWorker.find('users', {}, ray_id)
+        for user in users:
+            codeforces_handle = user.get("codeforces", {}).get("handle", "\[codeforces handle is not specified\]")
+            self.notifications_service.send_message(user["userId"], message.replace("%USER_ID%", user["userId"]).replace("%CODEFORCES_HANDLE%", codeforces_handle), ray_id, markdown=True)
+        logging.debug(f"USERS_SERVICE: {ray_id} - response=success")
 
     def transact(self, from_user: str, to_user: str, amount: float, ray_id: int = -1) -> bool :
         logging.debug(f"USERS_SERVICE: {ray_id} - transact({from_user}, {to_user}, {amount})")
