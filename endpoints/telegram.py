@@ -23,7 +23,7 @@ class TelegramBotService:
             logging.debug(f"TELEGRAM_BOT_SERVICE: {ray_id} - handle_start_message({message})")
             status = self.users_service.create_user(str(message.chat.id), 0, ray_id)
             if status:
-                self.bot.send_message(message.from_user.id, "Account was created. Your ID is " + str(message.from_user.id) + "\nLink your account to Codeforces to start earning HORSE tokens for participating in contests. To link your account write command /link codeforces <your_handle>" )
+                self.bot.send_message(message.from_user.id, "Account was created. Your ID is " + str(message.from_user.id) + "\nLink your account to Codeforces to start earning HORSE tokens for participating in contests. To link your account write command /link codeforces <your_handle> (without brackets)" )
             else:
                 self.bot.send_message(message.from_user.id, "Error. You are already registered.")
          
@@ -35,7 +35,7 @@ Commands:
 • /help - get help
 • /balance - get your balance
 • /pay <to_user_id> <amount> - send tokens to another user
-• /link codeforces <your_handle> - link your account to Codeforces to start earning HORSE tokens for participating in contests""")
+• /link codeforces <your_handle> (without brackets) - link your account to Codeforces to start earning HORSE tokens for participating in contests""")
 
         @self.bot.message_handler(commands=['balance'])
         def handle_balance_message(message):
@@ -75,6 +75,8 @@ Commands:
             try:
                 platform = s[1].lower()
                 user_handle = s[2]
+                if user_handle[0] == '<' or user_handle[-1] == '>':
+                    raise ValueError("Handle should not contain '<' or '>'")
                 if platform == "codeforces":
                     result = users_service.link_codeforces(user_handle, str(message.chat.id), ray_id)
                     if result == users_service.LinkCodeforcesResponse.SUCCESS:
@@ -88,7 +90,7 @@ Commands:
                 else:
                     self.bot.send_message(message.from_user.id, f"Unsupported platform '{platform}'.\nSupported platforms: codeforces")
             except Exception as e:
-                self.bot.send_message(message.from_user.id, "Error. Incorrect command format. Please call this command in the following way: /link codeforces <your_handle>")
+                self.bot.send_message(message.from_user.id, "Error. Incorrect command format. Please call this command in the following way: /link codeforces <your_handle> (without brackets)")
                 logging.debug(f"TELEGRAM_BOT_SERVICE: {ray_id} - Error. Possibly incorrect input - {e}")
 
     def run(self):
