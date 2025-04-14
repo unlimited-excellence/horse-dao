@@ -52,10 +52,10 @@ class CodeforcesService:
         
         # condition contest finished more than *some* days before
         if not is_group_contest:
-            if not contest.__contains__('relativeTimeSeconds') or int(contest['relativeTimeSeconds']) - int(contest['durationSeconds']) <= int(self.config["codeforces"]["public_contest_postprocess_delay_sec"]) / 1000:
+            if not contest.__contains__('relativeTimeSeconds') or int(contest['relativeTimeSeconds']) - int(contest['durationSeconds']) <= int(self.config["codeforces"]["public_contest_postprocess_delay"]) / 1000:
                 return False
         else:
-            if not contest.__contains__('relativeTimeSeconds') or int(contest['relativeTimeSeconds']) - int(contest['durationSeconds']) <= int(self.config["codeforces"]["private_contest_postprocess_delay_sec"]) / 1000:
+            if not contest.__contains__('relativeTimeSeconds') or int(contest['relativeTimeSeconds']) - int(contest['durationSeconds']) <= int(self.config["codeforces"]["private_contest_postprocess_delay"]) / 1000:
                 return False
         # condition contest finished less than *some* days before
         if int(contest['relativeTimeSeconds']) - int(contest['durationSeconds']) >= int(self.config["codeforces"]["not_proceed_contests_after"]) / 1000:
@@ -74,6 +74,8 @@ class CodeforcesService:
     def calculate_contest_coefficient(contest):
         # 1 - Div4; 1.5 - Div3; 2 - Div2; 2.5 - Div1+Div2; 3 - Div1
 
+        if str(contest["name"]).find("Horse.Run()") != -1:
+            return 3
         if str(contest["name"]).find("Div. 1 + Div. 2") != -1:
             return 2.5
         if str(contest["name"]).find("Div. 1") != -1:
@@ -134,7 +136,7 @@ class CodeforcesService:
                 if is_handle_proceeded is not None:
                     continue
 
-                reward_amount = (((P - S + 1.) / P) * K * 100.) / M
+                reward_amount = (((P - S + 1.) / P) ** 3 * K * 10.) / M
                 self.database_worker.insert_one('proceeded-results', {
                     "platform": "codeforces", 
                     "contestId": contest['id'], 
