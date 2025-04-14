@@ -134,7 +134,7 @@ class CodeforcesService:
                 if is_handle_proceeded is not None:
                     continue
 
-                reward_amount = (((P - S + 1.) / P) * K * 100.) / M
+                reward_amount = (((P - S + 1.) / P) ** 3 * K * 10.) / M
                 self.database_worker.insert_one('proceeded-results', {
                     "platform": "codeforces", 
                     "contestId": contest['id'], 
