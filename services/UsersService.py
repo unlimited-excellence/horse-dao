@@ -81,6 +81,15 @@ class UsersService:
             self.notifications_service.send_message(user["userId"], message.replace("%USER_ID%", user["userId"]).replace("%CODEFORCES_HANDLE%", codeforces_handle), ray_id, markdown=True)
         logging.debug(f"USERS_SERVICE: {ray_id} - response=success")
 
+    def test_announce(self, receiver_id: str, message: str, ray_id: int = -1):
+        logging.debug(f"USERS_SERVICE: {ray_id} - test_announce({receiver_id}, {message})")
+        user = self.databaseWorker.find_one('users', {
+            "userId": receiver_id
+        }, ray_id)
+        codeforces_handle = user.get("codeforces", {}).get("handle", "\[codeforces handle is not specified\]")
+        self.notifications_service.send_message(user["userId"], message.replace("%USER_ID%", user["userId"]).replace("%CODEFORCES_HANDLE%", codeforces_handle), ray_id, markdown=True)
+        logging.debug(f"USERS_SERVICE: {ray_id} - response=success")
+
     def transact(self, from_user: str, to_user: str, amount: float, ray_id: int = -1) -> bool :
         logging.debug(f"USERS_SERVICE: {ray_id} - transact({from_user}, {to_user}, {amount})")
         update_one_result = self.databaseWorker.update_one('users', {
