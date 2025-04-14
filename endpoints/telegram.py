@@ -88,9 +88,28 @@ Commands:
                     elif result == users_service.LinkCodeforcesResponse.ERROR_ALREADY_USED_ACCOUNT:
                         self.bot.send_message(message.from_user.id, f" ️Error. Account {user_handle} is already linked. Account on Codeforces can be linked only to one person.")
                 else:
-                    self.bot.send_message(message.from_user.id, f"Unsupported platform '{platform}'.\nSupported platforms: codeforces")
+                    self.bot.send_message(message.from_user.id, f"Error. Unsupported platform '{platform}'.\nSupported platforms: codeforces")
             except Exception as e:
                 self.bot.send_message(message.from_user.id, "Error. Incorrect command format. Please call this command in the following way: /link codeforces <your_handle> (without brackets)")
+                logging.debug(f"TELEGRAM_BOT_SERVICE: {ray_id} - Error. Possibly incorrect input - {e}")
+
+        @self.bot.message_handler(commands=['_give'])
+        def handle__give_message(message):
+            self.lastRayId += 1; ray_id = self.lastRayId
+            logging.debug(f"TELEGRAM_BOT_SERVICE: {ray_id} - handle__give_message({message})")
+            try:
+                if not self.users_service.is_user_admin(str(message.from_user.id), ray_id):
+                    self.bot.send_message(message.from_user.id, f"Error. This command is only for admins.")
+                else:
+                    s = message.text.split()
+                    receiver_id = s[1]
+                    amount = float(s[2])
+                    message_text = None
+                    if len(s) > 3:
+                       message_text = " ".join(s[3:])
+                    self.users_service.give_tokens(receiver_id, amount, message_text, ray_id)
+            except Exception as e:
+                self.bot.send_message(message.from_user.id, "Error. Incorrect command format. Please call this command in the following way: /_give <user_id> <amount> <message>")
                 logging.debug(f"TELEGRAM_BOT_SERVICE: {ray_id} - Error. Possibly incorrect input - {e}")
 
     def run(self):

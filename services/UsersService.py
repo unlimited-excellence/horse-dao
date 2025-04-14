@@ -46,11 +46,12 @@ class UsersService:
             }
         }, ray_id)
 
+        user_balance = str(self.get_balance(user_id, ray_id))
         if message is None:
-            message = "Balance have changed by "+ str(amount) + ".\n" + "Your final balance is " + str(self.get_balance(user_id, ray_id))
+            message = "Balance have changed by "+ str(amount) + ".\n" + f"Your final balance is {user_balance}"
 
         logging.debug(f"USERS_SERVICE: {ray_id} - Successfully given tokens")
-        self.notifications_service.send_message(user_id, message, ray_id)
+        self.notifications_service.send_message(user_id, message.replace("\\n", "\n").replace("%AMOUNT%", str(amount)).replace("%BALANCE", user_balance), ray_id)
 
     def is_user_registered(self, user_id: str, ray_id: int = -1) -> bool:
         logging.debug(f"USERS_SERVICE: {ray_id} - is_user_registered({user_id})")
@@ -62,6 +63,16 @@ class UsersService:
             return False
         logging.debug(f"USERS_SERVICE: {ray_id} - response=True")
         return True
+
+    def is_user_admin(self, user_id: str, ray_id: int = -1) -> bool:
+        logging.debug(f"USERS_SERVICE: {ray_id} - is_user_admin({user_id})")
+        user = self.databaseWorker.find_one('rbac-users-roles', {
+            'userId': user_id,
+            'role': 'admin'
+        })
+        logging.debug(f"USERS_SERVICE: {ray_id} - response={user is not None}")
+        return user is not None
+
     def transact(self, from_user: str, to_user: str, amount: float, ray_id: int = -1) -> bool :
         logging.debug(f"USERS_SERVICE: {ray_id} - transact({from_user}, {to_user}, {amount})")
         update_one_result = self.databaseWorker.update_one('users', {

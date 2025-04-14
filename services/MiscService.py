@@ -21,8 +21,8 @@ class MiscService:
                 },
                 "codeforces": {
                     "refresh_contests_results_cooldown": 1*24*60*60*1000,
-                    "private_contest_postprocess_delay_sec": 10*60*1000,
-                    "public_contest_postprocess_delay_sec": 3*24*60*60*1000,
+                    "private_contest_postprocess_delay": 10*60*1000,
+                    "public_contest_postprocess_delay": 3*24*60*60*1000,
                     "not_proceed_contests_after": 14*24*60*60*1000,
                     "APIKey": "<KEY>",
                     "APISecret": "<SECRET>"
