@@ -112,5 +112,39 @@ Commands:
                 self.bot.send_message(message.from_user.id, "Error. Incorrect command format. Please call this command in the following way: /_give <user_id> <amount> <message>")
                 logging.debug(f"TELEGRAM_BOT_SERVICE: {ray_id} - Error. Possibly incorrect input - {e}")
 
+        @self.bot.message_handler(commands=['_announce'])
+        def handle__announce_message(message):
+            self.lastRayId += 1; ray_id = self.lastRayId
+            logging.debug(f"TELEGRAM_BOT_SERVICE: {ray_id} - handle__announce_message({message})")
+            try:
+                if not self.users_service.is_user_admin(str(message.from_user.id), ray_id):
+                    self.bot.send_message(message.from_user.id, f"Error. This command is only for admins.")
+                else:
+                    s = message.text.split()
+                    message_text = " ".join(s[1:])
+                    if message_text == "":
+                        raise ValueError("Message should not be empty")
+                    self.users_service.announce(message_text, ray_id)
+            except Exception as e:
+                self.bot.send_message(message.from_user.id, "Error. Incorrect command format. Please call this command in the following way: /_announce <message>")
+                logging.debug(f"TELEGRAM_BOT_SERVICE: {ray_id} - Error. Possibly incorrect input - {e}")
+
+        @self.bot.message_handler(commands=['_test_announce', '_testnounce'])
+        def handle__test_announce_message(message):
+            self.lastRayId += 1; ray_id = self.lastRayId
+            logging.debug(f"TELEGRAM_BOT_SERVICE: {ray_id} - handle__test_announce_message({message})")
+            try:
+                if not self.users_service.is_user_admin(str(message.from_user.id), ray_id):
+                    self.bot.send_message(message.from_user.id, f"Error. This command is only for admins.")
+                else:
+                    s = message.text.split()
+                    message_text = " ".join(s[1:])
+                    if message_text == "":
+                        raise ValueError("Message should not be empty")
+                    self.users_service.test_announce(str(message.from_user.id), message_text, ray_id)
+            except Exception as e:
+                self.bot.send_message(message.from_user.id, "Error. Incorrect command format. Please call this command in the following way: /_test_announce <message>")
+                logging.debug(f"TELEGRAM_BOT_SERVICE: {ray_id} - Error. Possibly incorrect input - {e}")
+
     def run(self):
         self.bot.infinity_polling()
