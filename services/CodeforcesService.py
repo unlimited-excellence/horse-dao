@@ -76,6 +76,8 @@ class CodeforcesService:
 
         if str(contest["name"]).find("Horse.Run()") != -1:
             return 3
+        if str(contest["name"]).find("{HORSE} Marathon") != -1:
+            return 1.5
         if str(contest["name"]).find("Div. 1 + Div. 2") != -1:
             return 2.5
         if str(contest["name"]).find("Div. 1") != -1:
