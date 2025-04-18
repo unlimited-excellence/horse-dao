@@ -1,4 +1,6 @@
 import logging
+import time
+from datetime import datetime
 from enum import EnumMeta, Enum
 
 import requests
@@ -45,13 +47,22 @@ class UsersService:
                 "balance": amount
             }
         }, ray_id)
+        user_balance = self.get_balance(user_id, ray_id)
+        self.databaseWorker.insert_one('transactions', {
+            'from': None,
+            'to': user_id,
+            'amount': amount,
+            'newBalance': user_balance,
+            'message': message,
+            'rayId': ray_id,
+            'createdAt': datetime.now(),
+        }, ray_id)
 
-        user_balance = str(self.get_balance(user_id, ray_id))
         if message is None:
             message = "Balance have changed by "+ str(amount) + ".\n" + f"Your final balance is {user_balance}"
 
         logging.debug(f"USERS_SERVICE: {ray_id} - Successfully given tokens")
-        self.notifications_service.send_message(user_id, message.replace("%AMOUNT%", str(amount)).replace("%BALANCE%", user_balance), ray_id)
+        self.notifications_service.send_message(user_id, message.replace("%AMOUNT%", str(amount)).replace("%BALANCE%", str(user_balance)), ray_id)
 
     def is_user_registered(self, user_id: str, ray_id: int = -1) -> bool:
         logging.debug(f"USERS_SERVICE: {ray_id} - is_user_registered({user_id})")
@@ -112,7 +123,18 @@ class UsersService:
                 "balance" : amount
             }
         }, ray_id)
-        self.notifications_service.send_message(from_user,"You have sent " + str(amount) + " to user " + to_user + ".\n" + "Now your balance is: " + str(self.get_balance(from_user, ray_id)), ray_id)
+        user_balance = self.get_balance(from_user, ray_id)
+        self.databaseWorker.insert_one('transactions', {
+            'from': from_user,
+            'to': to_user,
+            'amount': amount,
+            'newBalance': user_balance,
+            'message': None,
+            'rayId': ray_id,
+            'createdAt': datetime.now(),
+        }, ray_id)
+
+        self.notifications_service.send_message(from_user,"You have sent " + str(amount) + " to user " + to_user + ".\n" + "Now your balance is: " + str(user_balance), ray_id)
         self.notifications_service.send_message(to_user, "You received " + str(amount) + " from user " + str(from_user), ray_id)
         logging.debug(f"USERS_SERVICE: {ray_id} - response=True")
         return True
