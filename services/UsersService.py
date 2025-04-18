@@ -56,7 +56,7 @@ class UsersService:
             'message': message,
             'rayId': ray_id,
             'createdAt': datetime.now(),
-        })
+        }, ray_id)
 
         if message is None:
             message = "Balance have changed by "+ str(amount) + ".\n" + f"Your final balance is {user_balance}"
@@ -132,7 +132,7 @@ class UsersService:
             'message': None,
             'rayId': ray_id,
             'createdAt': datetime.now(),
-        })
+        }, ray_id)
 
         self.notifications_service.send_message(from_user,"You have sent " + str(amount) + " to user " + to_user + ".\n" + "Now your balance is: " + str(user_balance), ray_id)
         self.notifications_service.send_message(to_user, "You received " + str(amount) + " from user " + str(from_user), ray_id)
