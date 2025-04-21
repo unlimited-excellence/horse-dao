@@ -3,6 +3,8 @@ import logging
 
 from time import sleep
 
+from telebot.types import LabeledPrice
+
 from services.UsersService import UsersService
 from services.NotificationsService import NotificationsService
 
@@ -145,6 +147,21 @@ Commands:
             except Exception as e:
                 self.bot.send_message(message.from_user.id, "Error. Incorrect command format. Please call this command in the following way: /_test_announce <message>")
                 logging.debug(f"TELEGRAM_BOT_SERVICE: {ray_id} - Error. Possibly incorrect input - {e}")
+
+        @bot.message_handler(commands=['deposit'])
+        def handle_pay_command(message):
+            """Handles /pay command by sending an invoice for 10 Stars."""
+            prices = [LabeledPrice(label='10 Stars', amount=20)]
+            bot.send_invoice(
+                chat_id=message.chat.id,
+                title='Purchase Stars',
+                description='Top up your account with 10 Stars',
+                invoice_payload=f"stars:{message.from_user.id}",
+                provider_token="",
+                currency='XTR',
+                prices=[LabeledPrice(label='Working Time Machine', amount=20)],
+                start_parameter='buy-stars',
+            )
 
     def run(self):
         self.bot.infinity_polling()
