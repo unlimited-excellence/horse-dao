@@ -2,17 +2,18 @@ import hashlib
 import logging
 import time
 import requests
-from pymongo.auth import authenticate
 
 from database.database_worker import DatabaseWorker
+from services.MiscService import MiscService
 from services.UsersService import UsersService
 
 class CodeforcesService:
     ray_id = -2
-    def __init__(self, database_worker: DatabaseWorker, users_service: UsersService, config: dict):
+    def __init__(self, database_worker: DatabaseWorker, users_service: UsersService, misc_service: MiscService):
+        self.config = None
         self.database_worker = database_worker
         self.users_service = users_service
-        self.config = config
+        self.misc_service = misc_service
 
     def sign_request(self, method: str, request: str) -> str:
         time_for_request = int(time.time())
@@ -151,6 +152,7 @@ class CodeforcesService:
     def mainloop(self):
         while True:
             try:
+                self.config = self.misc_service.get_or_create_config() # Reupdate config on each iteration
                 groups = self.database_worker.find('contest-groups', {
                     "platform": "codeforces"
                 }, self.ray_id)

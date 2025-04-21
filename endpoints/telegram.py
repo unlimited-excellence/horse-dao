@@ -9,11 +9,10 @@ from services.NotificationsService import NotificationsService
 
 class TelegramBotService:
     lastRayId = -1
-    def __init__(self, bot: telebot.TeleBot, users_service: UsersService, notifications_service: NotificationsService, config : dict):
+    def __init__(self, bot: telebot.TeleBot, users_service: UsersService, notifications_service: NotificationsService):
         self.bot = bot
         self.users_service = users_service
         self.notifications_service = notifications_service
-        self.config = config
         #hello AlexJenious why we are writing there, instead of that we can speak by voice chat(this is history don`t delete that)
         #hello Nazar. I dont know why we speak there. Andrij speaks, so dont speak in voice chat
 

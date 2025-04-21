@@ -30,10 +30,9 @@ if __name__ == '__main__':
 
     logging.info("Initializing MiscService")
     misc_service = MiscService(databaseWorker)
-    config = misc_service.get_or_create_config()
 
     logging.info("Initializing TeleBot")
-    bot_token = config["telegram"]["BOT_TOKEN"]
+    bot_token = misc_service.get_or_create_config()["telegram"]["BOT_TOKEN"]
     bot = telebot.TeleBot(bot_token)
 
     logging.info("Initializing NotificationsService")
@@ -43,10 +42,10 @@ if __name__ == '__main__':
     users_service = UsersService(databaseWorker, notifications_service)
 
     logging.info("Initializing Telegram Bot")
-    telegram_bot_service = TelegramBotService(bot, users_service, notifications_service, config)
+    telegram_bot_service = TelegramBotService(bot, users_service, notifications_service)
 
     logging.info("Initializing CodeforcesService")
-    codeforces_service = CodeforcesService(databaseWorker, users_service, config)
+    codeforces_service = CodeforcesService(databaseWorker, users_service, misc_service)
     codeforces_thread = threading.Thread(target=codeforces_service.mainloop)
     codeforces_thread.start()
 
