@@ -17,9 +17,9 @@
     * [5.2. Investor Participation in the DAO](#52-investor-participation-in-the-dao)
 * [6. Roadmap](#6-roadmap)
     * [Phase 1: Initial Integration and Pilot (Completed)](#phase-1-initial-integration-and-pilot-completed)
-    * [Phase 2: Integration Expansion and Technical Optimization (0-6 months)](#phase-2-integration-expansion-and-technical-optimization-0-6-months)
-    * [Phase 3: Ecosystem Scaling and Utility Expansion (6-18 months)](#phase-3-ecosystem-scaling-and-utility-expansion-6-18-months)
-    * [Phase 4: Global Expansion and Full Decentralization (18+ months)](#phase-4-global-expansion-and-full-decentralization-18-months)
+    * [Phase 2: Technical Optimization and Platform Development (Q3 2025)](#phase-2-technical-optimization-and-platform-development-q3-2025)
+    * [Phase 3: Ecosystem Scaling and DEX Listing (Q4 2025 - Q1 2026)](#phase-3-ecosystem-scaling-and-dex-listing-q4-2025---q1-2026)
+    * [Phase 4: Global Expansion and Full Decentralization (18+ months from Q3 2025)](#phase-4-global-expansion-and-full-decentralization-18-months-from-q3-2025)
 * [7. Market Analysis and Competitive Landscape](#7-market-analysis-and-competitive-landscape)
     * [7.1. Analysis of the "Learn-to-Earn" Market and IP Tokenization](#71-analysis-of-the-learn-to-earn-market-and-ip-tokenization)
     * [7.2. Competitive Landscape and HORSE's Unique Value Proposition](#72-competitive-landscape-and-horses-unique-value-proposition)
@@ -28,7 +28,6 @@
     * [8.2. Key Assumptions](#82-key-assumptions)
 * [9. Conclusion](#9-conclusion)
 * [References](#references)
-
 ---
 
 ## Abstract
@@ -160,31 +159,25 @@ The HORSE Project has a clear development plan aimed at expanding the ecosystem 
 
 ### Phase 1: Initial Integration and Pilot (Completed)
 
-* Development and launch of a Telegram bot for integration with Codeforces.
-* Conducting the pilot Horse.Run() contest and the first HORSE token issuances.
-* Forming the initial community and testing reward mechanisms.
+* **Beta Launch & First Rewarded Contest**: The project was launched with the Horse.Run() contest, which was the first to reward participants with $HORSE tokens.
+* **Telegram Bot UX improvement and global expansion**: The Telegram bot's user experience was improved, and the project started its global expansion.
 
-### Phase 2: Integration Expansion and Technical Optimization (0-6 months)
+### Phase 2: Technical Optimization and Platform Development (Q3 2025)
 
-* Full blockchain integration and audit of HORSE smart contracts.
-* Expanding Codeforces integration (e.g., supporting team competitions).
-* Initial setup of the DAO infrastructure and voting mechanisms.
-* Development and implementation of smart contracts for mentorship and talent sponsorship.
+* **Website Interface Launch**: All core functionalities of the Telegram bot will be migrated to a dedicated website to offer users a more convenient experience. The website will include a dashboard for viewing user balance and statistics, and a "Send $HORSE" feature for direct token transfers.
 
-### Phase 3: Ecosystem Scaling and Utility Expansion (6-18 months)
+### Phase 3: Ecosystem Scaling and DEX Listing (Q4 2025 - Q1 2026)
 
-* Integration with other major competitive programming platforms (AtCoder, LeetCode).
-* Support for math Olympiads and integration with educational platforms.
-* Implementation of additional token utility functions: staking, NFT achievements, and access to premium content.
-* Holding the first DAO votes on key parameters and development directions.
-* Launching ambassador programs and incentives for creating educational content.
+* **DEX Listing**: The $HORSE token will be officially launched on a Decentralized Exchange (DEX), such as UniSwap on the Polygon Network, as an ERC20 token.
+* **"Share revenue with trainer" feature**: This feature, implemented via smart contracts, will allow participants to automatically share a percentage of their contest earnings with their mentor.
+* **Investment Mechanism Launch**: The "stock" investment model, where investors can support participants by acquiring shares and receiving dividends from their contest earnings, will be launched. This mechanism is designed to provide financial backing to talented individuals while ensuring they remain incentivized to compete.
 
-### Phase 4: Global Expansion and Full Decentralization (18+ months)
+### Phase 4: Global Expansion and Full Decentralization (18+ months from Q3 2025)
 
-* Development of decentralized applications (dApps) for interacting with the HORSE ecosystem.
-* Expanding partnerships with educational institutions, research institutes, and tech companies.
-* Global expansion into new markets and language communities.
-* Implementation of advanced DAO governance features and full handover of control to the community.
+* **Cross-Platform Integration**: We will expand our integration to include other major competitive programming platforms such as AtCoder and LeetCode, as well as educational platforms and math Olympiads.
+* **DAO Infrastructure and First Votes**: The first DAO votes on key parameters and development directions will be held, marking a move toward community-controlled governance.
+* **Expanded Partnerships**: We will seek partnerships with educational institutions, scientific research centers, and technology companies.
+* **Full Community Control**: The project will transition to a fully decentralized model, with the community taking over all control and key decision-making processes.
 
 ---
 
