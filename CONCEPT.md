@@ -238,6 +238,6 @@ The project is being built from the ground up by and for the community, with tra
 
 ## References
 
-* [What is Intellectual Property Tokenization](https://www.debutinfotech.com/blog/intellectual-property-tokenization-guide) - Debut Infotech, accessed August 27, 2025
-* [Turning Patents and Intellectual Property into Digital Tokens](https://ideausher.com/blog/intellectual-property-tokenization/) - IdeaUsher, accessed August 27, 2025
-* [Blockchain is Revolutionizing Education: Real-World Applications](https://www.blockchainappfactory.com/blog/real-world-blockchain-applications-in-education/) - accessed August 27, 2025
+* [What is Intellectual Property Tokenization](https://www.debutinfotech.com/blog/intellectual-property-tokenization-guide)
+* [Turning Patents and Intellectual Property into Digital Tokens](https://ideausher.com/blog/intellectual-property-tokenization/)
+* [Blockchain is Revolutionizing Education: Real-World Applications](https://www.blockchainappfactory.com/blog/real-world-blockchain-applications-in-education/)
